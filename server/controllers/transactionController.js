@@ -3,7 +3,7 @@ const PaymentAccount = require("../models/PaymentAccount");
 const catchAsync = require("../utils/catchAsync");
 const Order = require("../models/Order");
 const mongoose = require("mongoose");
-const paymentAccount = require("../models/PaymentAccount");
+
 // Get all transactions, if user is admin, get all transactions, else get transactions of user
 exports.getAllTransactions = catchAsync(async (req, res, next) => {
   let transactions;

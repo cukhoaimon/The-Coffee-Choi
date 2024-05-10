@@ -3,9 +3,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 
 import AppLayout from "./ui/AppLayout";
-import Login from "./pages/Login";
-import Dashboard from "./pages/DashBoard";
 import ProtectedRoute from "./ui/ProtectedRoute";
+import Login from "./pages/Login";
 import { AuthContextProvider } from "./context/AuthenticationContext";
 import PageNotFound from "./pages/PageNotFound";
 import { ThemeContextProvider } from "./context/ThemeContext";
@@ -14,6 +13,7 @@ import DetailCategory from "./pages/DetailCategory";
 import Order from "./pages/Order";
 import User from "./pages/User";
 import DetailOrder from "./pages/DetailOrder";
+import DashBoard from "./pages/DashBoard";
 
 function App() {
   const queryClient = new QueryClient({
@@ -39,7 +39,7 @@ function App() {
                 }
               >
                 <Route index element={<Navigate replace to="dashboard" />} />
-                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="dashboard" element={<DashBoard />} />
                 <Route path="category" element={<Category />} />
                 <Route path="category/:slug" element={<DetailCategory />} />
                 <Route path="order" element={<Order />} />

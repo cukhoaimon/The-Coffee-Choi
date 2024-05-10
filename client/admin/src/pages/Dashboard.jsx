@@ -14,7 +14,7 @@ import FilterDashboard from "../features/dashboard/home/FilterDashboard";
 
 import { datediff } from "../utils/helpers";
 
-export default function Dashboard() {
+export default function DashBoard() {
   const [filter, setFilter] = useState(null);
 
   const handleChange = (event, newFilter) => {
@@ -35,20 +35,28 @@ export default function Dashboard() {
   }
 
   if (error) {
+    console.log("Dashboard Error", error.message);
     return <div>{error.message}</div>;
   }
-  const filteredOrders = data?.orders.orders
-    .filter((order) => order.status === "Completed")
-    .filter((order) => {
-      const today = new Date();
-      return filter !== null
-        ? datediff(new Date(order.createdTime), today) <= filter
-        : true;
-    });
 
-  const orders = data?.orders.orders.filter(
-    (order) => order.status === "Completed"
-  );
+  const filteredOrders =
+    data &&
+    data.orders &&
+    data.orders.orders &&
+    data.orders.orders
+      .filter((order) => order.status === "Completed")
+      .filter((order) => {
+        const today = new Date();
+        return filter !== null
+          ? datediff(new Date(order.createdTime), today) <= filter
+          : true;
+      });
+
+  const orders =
+    data &&
+    data.orders &&
+    data.orders.orders &&
+    data.orders.orders.filter((order) => order.status === "Completed");
 
   return (
     orders && (

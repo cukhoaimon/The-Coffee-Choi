@@ -1,8 +1,9 @@
-import axios from 'axios';
+import axios from "axios";
+import { API_SERVER } from "../config";
 
-const API_URL = 'http://localhost:8000/api/v1/users/';
+const URL = `${API_SERVER}/users`;
 
 export const updateUser = async (data) => {
-    const res = await axios.patch(`${API_URL}/update-info`, data);
-    return res.data;
-}
+  const res = await axios.patch(`${URL}/update-info`, data);
+  return res.data;
+};

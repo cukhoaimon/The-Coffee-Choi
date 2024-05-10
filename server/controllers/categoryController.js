@@ -50,7 +50,6 @@ exports.getCategory = catchAsync(async (req, res, next) => {
   if (!category) {
     return next(new AppError("No category found with that slug", 404));
   }
-  console.log(req.query);
   const feature = new APIFeatures(
     Product.find({ category: category._id, status: true }),
     req.query

@@ -28,8 +28,8 @@ export default function ProductsPagination({
         currentPage,
         PRODUCTS_PER_PAGE,
         sortValue,
-        filterValue.price.from,
-        filterValue.price.to,
+        filterValue.price?.from ?? 1,
+        filterValue.price?.to ?? 999999999,
         filterValue.isDiscount ? 1 : 0,
         searchValue
       );
@@ -44,7 +44,6 @@ export default function ProductsPagination({
     };
 
     getData();
-
   }, [sortValue, isSearch, filterValue, category, currentPage]);
 
   // set number of products per page

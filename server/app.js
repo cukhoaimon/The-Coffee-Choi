@@ -1,15 +1,17 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
-const userRouter = require("./routes/userRoute");
+const paymentAccountRoute = require("./routes/paymentAccountRoute");
+const transactionRoute = require("./routes/transactionRoute");
 const categoryRouter = require("./routes/categoryRoute");
 const productRouter = require("./routes/productRoute");
 const couponRouter = require("./routes/couponRoute");
 const orderRouter = require("./routes/orderRoute");
+const userRouter = require("./routes/userRoute");
 const productAttributeRouter = require("./routes/productAttibuteRoute");
 const errorController = require("./controllers/errorController");
 const AppError = require("./utils/appError");
-const passport = require("./passport");
+// const passport = require("./passport");
 
 const app = express();
 app.use(
@@ -27,6 +29,9 @@ app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/coupons", couponRouter);
 app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/product-attributes", productAttributeRouter);
+
+app.use("/api/v1/transactions", transactionRoute);
+app.use("/api/v1/paymentAccounts", paymentAccountRoute);
 
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));

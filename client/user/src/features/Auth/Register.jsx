@@ -7,29 +7,33 @@ import { useNavigate } from "react-router-dom";
 
 const Register = ({ setIsLogin }) => {
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: {errors}, watch } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm();
 
   const pw = watch("password", "");
 
-  const {registerUser} = React.useContext(AuthContext)
+  const { registerUser } = React.useContext(AuthContext);
 
   const onSubmit = async (data) => {
     try {
       const registerData = await registerUser(data);
-      if (registerData.status === "success"){
+      if (registerData.status === "success") {
         toast.success("Đăng kí thành công");
         navigate("/", {
-          replace: true
+          replace: true,
         });
-      }
-      else {
+      } else {
         toast.error(registerData.message);
       }
-    } 
-      catch (error) {
+    } catch (error) {
+      console.log("REGISTER DATA", error);
       toast.error(error.message);
     }
-  }
+  };
 
   return (
     <form>
@@ -37,27 +41,28 @@ const Register = ({ setIsLogin }) => {
         Đăng kí tài khoản
       </h1>
 
-      {errors.name && <span className="text-red-500 text-sm">Vui lòng nhập họ tên</span>}
+      {errors.name && (
+        <span className="text-red-500 text-sm">Vui lòng nhập họ tên</span>
+      )}
       <TEInput
         type="text"
         label="Họ tên"
         size="lg"
         className="mb-6"
-
-        {...register("name", {required: true})}
+        {...register("name", { required: true })}
       ></TEInput>
 
-
-      {errors.email && <span className="text-red-500 text-sm">Vui lòng nhập email</span>}
+      {errors.email && (
+        <span className="text-red-500 text-sm">Vui lòng nhập email</span>
+      )}
       <TEInput
         type="email"
         label="Email"
         size="lg"
         className="mb-6"
-
-        {...register("email", {required: true})}
+        {...register("email", { required: true })}
       ></TEInput>
-
+      {/* 
       {errors.phone && <span className="text-red-500 text-sm">Số điện thoại không hợp lệ</span>}
       <TEInput
         type="text"
@@ -66,39 +71,44 @@ const Register = ({ setIsLogin }) => {
         className="mb-6"
         maxLength={10}
         {...register("phone", {validate: (value) => value.startsWith('0') && value.length === 10})}
-      ></TEInput>
+      ></TEInput> */}
 
-
-      {errors.password && <span className="text-red-500 text-sm">Mật khẩu phải tối thiểu 8 kí tự</span>}
+      {errors.password && (
+        <span className="text-red-500 text-sm">
+          Mật khẩu phải tối thiểu 8 kí tự
+        </span>
+      )}
       <TEInput
         type="password"
         label="Mật khẩu"
         className="mb-6"
         size="lg"
-
-        {...register("password", {validate: (value) => value.length >= 8})}
+        {...register("password", { validate: (value) => value.length >= 8 })}
       ></TEInput>
 
-
-      {errors.confirmPassword && <span className="text-red-500 text-sm">Mật khẩu nhập lại không khớp</span>}
+      {errors.confirmPassword && (
+        <span className="text-red-500 text-sm">
+          Mật khẩu nhập lại không khớp
+        </span>
+      )}
       <TEInput
         type="password"
         label="Nhập lại mật khẩu"
         className="mb-6"
         size="lg"
-
-        {...register("confirmPassword", {validate: (value) => value === pw})}
+        {...register("confirmPassword", { validate: (value) => value === pw })}
       ></TEInput>
-
-      {errors.address && <span className="text-red-500 text-sm">Vui lòng địa chỉ</span>}
+      {/* 
+      {errors.address && (
+        <span className="text-red-500 text-sm">Vui lòng địa chỉ</span>
+      )}
       <TEInput
         type="text"
         label="Địa chỉ"
         size="lg"
         className="mb-6"
-
-        {...register("address", {required: true})}
-      ></TEInput>
+        {...register("address", { required: true })}
+      ></TEInput> */}
 
       <div className="mb-6 flex">
         <div className="mb-[0.125rem] block min-h-[1.5rem]">

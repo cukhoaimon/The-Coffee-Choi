@@ -1,13 +1,14 @@
-import axios from 'axios';
+import axios from "axios";
+import { API_SERVER } from "../config";
 
-const API_URL = 'http://localhost:8000/api/v1/orders';
+const URL = `${API_SERVER}/orders`;
 
 export const createOrder = async (order) => {
-    const res = await axios.post(API_URL, order);
-    return res.data;
-}
+  const res = await axios.post(URL, order);
+  return res.data;
+};
 
 export const getOrders = async () => {
-    const res = await axios.get(API_URL);
-    return res.data;
-}
+  const res = await axios.get(URL);
+  return res.data;
+};

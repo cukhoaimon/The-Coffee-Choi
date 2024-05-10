@@ -1,7 +1,7 @@
 const User = require("../models/User");
+const PaymentAccount = require("../models/PaymentAccount");
 const catchAsync = require("../utils/catchAsync");
 const jwt = require("jsonwebtoken");
-const axios = require("axios");
 const AppError = require("../utils/appError");
 
 const dotenv = require("dotenv");
@@ -15,24 +15,24 @@ const signToken = (user) => {
 };
 
 exports.signUp = catchAsync(async (req, res, next) => {
-  const newUser = await User.create({
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password,
-    role: req.body.role,
-    phone: req.body.phone,
-    address: req.body.address,
-  });
+  let newUser;
+  try {
+    newUser = await User.create({
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+      role: "user",
+    });
+  } catch (error) {
+    console.log("ERROR", error);
+  }
   const token = signToken(newUser);
 
-  const paymentAccount = await axios.post(
-    "https://localhost:8001/api/v1/paymentAccounts",
-    {
-      user: newUser._id,
-      balance: 0,
-      type: "user",
-    }
-  );
+  PaymentAccount.create({
+    user: newUser._id,
+    balance: 100_000_000,
+    type: "user",
+  });
 
   res.status(201).json({
     status: "success",
@@ -67,6 +67,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   ) {
     token = req.headers.authorization.split(" ")[1];
   }
+
   if (!token) {
     return next(
       new AppError("You are not logged in! Please log in to get access.", 401)
@@ -106,10 +107,7 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
 });
 
 exports.getUser = catchAsync(async (req, res, next) => {
-  const paymentAccount = await axios.get(
-    `https://localhost:8001/api/v1/paymentAccounts/${req.user._id}`
-  );
-  const payment = paymentAccount.data.data.paymentAccount;
+  const payment = await PaymentAccount.findOne({ user: req.user._id });
 
   if (!payment) {
     return next(new AppError("No payment account found with that ID", 404));

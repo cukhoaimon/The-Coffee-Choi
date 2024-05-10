@@ -1,14 +1,25 @@
-import axios from 'axios';
+import axios from "axios";
+import { API_SERVER } from "../config";
 
-const API_URL = 'http://localhost:8000/api/v1/categories';
+const URL = `${API_SERVER}/categories`;
 
 export const getCategories = async () => {
-    const res = await axios.get(`${API_URL}?status=true`);
-    return res.data;
-}
+  const res = await axios.get(`${URL}?status=true`);
+  return res.data;
+};
 
-export const getProductsCustom = async (category, page, limit, sort, from, to, discount, name) => {
-    const res = await axios.get(`${API_URL}/${category}?page=${page}&limit=${limit}&sort=${sort}&price[gte]=${from}&price[lte]=${to}&discount[gte]=${discount}&name=${name}
+export const getProductsCustom = async (
+  category,
+  page,
+  limit,
+  sort,
+  from,
+  to,
+  discount,
+  name
+) => {
+  const res =
+    await axios.get(`${URL}/${category}?page=${page}&limit=${limit}&sort=${sort}&name=${name}
     `);
-    return res.data;
-}
+  return res.data;
+};

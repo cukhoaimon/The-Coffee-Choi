@@ -9,12 +9,12 @@ const ProductAttribute = require("../models/ProductAttribute");
 
 // Get all products
 exports.getAllProducts = catchAsync(async (req, res, next) => {
-  // TODO: add filter, sort, limit, pagination
   const feature = new APIFeatures(Product.find(), req.query)
     .filter()
     .sort()
     .limit()
     .paginate();
+
   const products = await feature.query;
   res.status(200).json({
     status: "success",

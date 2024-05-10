@@ -6,6 +6,7 @@ const authController = require("../controllers/authController");
 const userController = require("../controllers/userController");
 
 require("dotenv").config({ path: "./config.env" });
+
 // For testing purposes
 userRouter.get(
   "/getAllUsers",
@@ -17,6 +18,8 @@ userRouter.get(
 userRouter.post("/signup", authController.signUp);
 // Login
 userRouter.post("/login", authController.login);
+
+userRouter.get("/", authController.protect, authController.getUser);
 
 userRouter.get(
   "/auth/google",
@@ -31,7 +34,6 @@ userRouter.get(
   (req, res, next) => {
     passport.authenticate("google", (err, profile) => {
       req.user = profile;
-      console.log(req.user);
       next();
     })(req, res, next);
   },
@@ -67,8 +69,6 @@ userRouter.get(
     res.redirect(`http://localhost:5173/third-party?token=${token}`);
   }
 );
-
-userRouter.get("/", authController.protect, authController.getUser);
 
 userRouter.patch(
   "/update-info",

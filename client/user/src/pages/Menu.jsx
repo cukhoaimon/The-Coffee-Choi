@@ -4,7 +4,7 @@ import MenuContent from "../features/Menu/MenuContent";
 import productlist from "../mocks/ProductListHome/data";
 // import categorylist from '../mocks/Category/data';
 
-import { useState, useEffect, useLayoutEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { getCategories } from "../services/categories";

@@ -7,10 +7,6 @@ import ProductsPagination from "./ProductsPagination";
 
 export default function MenuContent({ categories }) {
   const defaultFilter = {
-    price: {
-      from: 1000,
-      to: 9999999,
-    },
     isDiscount: false,
   };
 

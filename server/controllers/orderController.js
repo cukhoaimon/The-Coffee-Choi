@@ -2,11 +2,15 @@ const Order = require("../models/Order");
 const OrderItem = require("../models/OrderItem");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
-const APIFeatures = require("../utils/apiFeatures");
 const Product = require("../models/Product");
+
 const ProductAttribute = require("../models/ProductAttribute");
 const Coupon = require("../models/Coupon");
-const axios = require("axios");
+
+const dotenv = require("dotenv");
+const PaymentAccount = require("../models/PaymentAccount");
+dotenv.config({ path: "./config.env" });
+
 // Get all orders
 exports.getAllOrders = catchAsync(async (req, res, next) => {
   let orders;
@@ -119,7 +123,6 @@ exports.createOrder = catchAsync(async (req, res, next) => {
 
     // Topping
     const toppingString = [];
-    console.log(productItem.toppings);
     if (productItem.toppings) {
       // Find topping
       for (const toppingItem of productItem.toppings) {
@@ -159,12 +162,9 @@ exports.createOrder = catchAsync(async (req, res, next) => {
       : totalMoney + 30000,
   });
 
-  // Send order to transaction server
-  const transactionServerUrl = "https://localhost:8001/api/v1/transactions";
-  const transaction = await axios.post(transactionServerUrl, {
-    paymentAccount: req.user.id,
-    orderId: order.id,
-  });
+  const paymentAccount = await PaymentAccount.findOne({ user: req.user.id });
+  paymentAccount.balance -= order.totalMoney;
+  await paymentAccount.save();
 
   res.status(201).json({
     status: "success",
@@ -179,8 +179,7 @@ exports.updateStatus = catchAsync(async (req, res, next) => {
   const order = await Order.findById(req.params.id);
   if (req.body.status == "Rejected") {
     // Refund
-    const paymentAccountsServerUrl =
-      "https://localhost:8001/api/v1/paymentAccounts";
+    const paymentAccountsServerUrl = `${API_SERVER}/v1/paymentAccounts`;
 
     // Get payment account
     const adminPaymentAccount = await axios.get(
